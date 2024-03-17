@@ -1,0 +1,135 @@
+{% extends 'panel/base.html' %} 
+{% load static %} 
+
+{% block content %}
+<div class="container my-5" style="margin-bottom: 15rem">
+  
+
+  <div class="row" style="margin-bottom:5rem;">
+    <div class="col-lg-12">
+      
+      <div class="mb-5 row">
+        <h1>VPN Logs</h1>
+        <p style="margin-bottom: 0.2rem;" class="fs-5">Ham VPN log dosyalarını seçin Paketleme işlemini tamamlayın.</p>
+        <small>Sağlanan veriler kayda uygun şekle getirilip zip dosyasına çevrilir.</small>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4">
+          <form
+            method="post"
+            enctype="multipart/form-data"
+            action='{% url "vpn_logs:save_text_files" %}'
+            id="submit_form"
+          >
+            {% csrf_token %}
+
+            {% if messages %} {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %} {% endif %}
+
+            <div class="form-control p-4">
+              <label for="txt_files" class="form-label">Paket İsmi</label>
+              <input
+                class="form-control mb-3"
+                type="text"
+                id="package_name"
+                name="package_name"
+                required
+              />
+              
+    
+              <label for="txt_files" class="form-label">VPN Log Dosyaları</label>
+              <input
+                class="btn btn-light form-control mb-3"
+                type="file"
+                id="txt_files"
+                name="txt_files"
+                accept=".txt"
+                multiple
+              />
+
+              <button class="btn btn-primary" type="submit">İşlemi Tamamla!</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+
+
+  {% if user_packages %}
+  <hr class="col-1 my-4" />
+
+  <div class="row mb-4">
+    <div class="col-lg-12">
+      <h3>Öncekiler</h3>
+      <p class="fs-5">Geçmiş VPN Log paketleri.</p>
+      
+      <div class="container">
+        <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3 ">
+        {% for package in user_packages %}          
+              
+          <div class="p-2">
+            <div class="card">
+              {% if package.name %}
+                <h5 class="card-header">{{ package.name }}</h5>
+                {% else %}
+                <h5 class="card-header">Untitled Package</h5>
+              {% endif %}
+              <div class="card-body">
+                <p class="card-text">{{ package }}</p>
+                <div class="w-100 d-flex align-items-center justify-content-center">
+                  <a href='{% url "vpn_logs:process_text_files" package.uuid %}' class="btn btn-sm m-1 btn-outline-primary"><i class="bi bi-download"></i> Download</a>
+                  <a href='{% url "vpn_logs:inspect_package" package.uuid %}' class="btn btn-sm m-1 btn-outline-primary"><i class="bi bi-eyeglasses"></i> Inspect</a>
+                </div>
+              </div>
+            </div>
+          </div>
+                
+        {% endfor %}
+        </div>
+      </div>
+      
+
+    </div>
+  </div>
+  {% endif %}
+
+
+</div>
+{% endblock content %} 
+
+{% block script %}
+<script>
+  // id = submit_form gönderildiğinde input içi boş mu diye kontrol et
+  document.getElementById("submit_form").onsubmit = function () {
+    var files = document.getElementById("txt_files").files;
+    if (files.length == 0) {
+      alert("Please select at least one file.");
+      return false;
+    }
+
+    var package_name = document.getElementById("package_name").value;
+    if (package_name.length == 0) {
+      alert("Please enter a package name.");
+      return false;
+    }
+  };
+
+  function processVPNFiles() {
+    var form_data = new FormData();
+    var files = document.getElementById("txt_files").files;
+
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      form_data.append("txt_files", file);
+    }
+  }
+</script>
+{% endblock script %}

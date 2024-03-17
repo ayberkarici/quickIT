@@ -1,0 +1,36 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="{% url "panel:index" %}">QuickIT</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
+        <li class="nav-item">
+          <a class="nav-link {% if nav_name  == "home" %}active{% endif %}" aria-current="page" href="{% url "panel:index" %}">Home</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {% if nav_name  == "vpn_logs" %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Tools 
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url "vpn_logs:index" %}">VPN Logs</a></li>
+          </ul>
+        </li>
+
+      </ul>
+
+      <div class="d-flex" role="search">
+        <form action="{% url 'account:logout' %}" method="post">
+          {% csrf_token %}
+          <button class="btn btn-outline-warning" type="submit">Logout</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</nav>

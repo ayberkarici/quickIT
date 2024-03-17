@@ -1,0 +1,52 @@
+{% extends 'panel/base.html' %} 
+{% load static %} 
+
+{% block content %}
+<div class="container my-5" style="margin-bottom: 15rem">
+  <div class="row" style="margin-bottom:5rem;">
+    <div class="col-lg-8">
+      <div class="w-100 d-flex align-items-start justify-content-between ">
+        <div>
+          <h1>VPN Logs</h1>
+          <p class="fs-5">Paket tüm içeriğini görmek için indirin. Aşağıda temel CSV dosyaları listelenmiştir.</p>
+        </div>
+        <div>
+          <a href="{% url "vpn_logs:index" %}" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i> Geri Dön</a>
+        </div>
+      </div>
+
+      <ul>
+      {% for file in text_files %}
+        <li><a href="{{ file.file.url }}">{{ file.name }}</a></li>
+      {% endfor %}
+      </ul>
+
+      <a href='{% url "vpn_logs:process_text_files" package.uuid %}' class="btn btn-sm m-1 btn-outline-primary"><i class="bi bi-download"></i> Download</a>
+
+    </div>
+  </div>
+</div>
+{% endblock content %} 
+
+{% block script %}
+<script>
+  // id = submit_form gönderildiğinde input içi boş mu diye kontrol et
+  document.getElementById("submit_form").onsubmit = function () {
+    var files = document.getElementById("txt_files").files;
+    if (files.length == 0) {
+      alert("Please select at least one file.");
+      return false;
+    }
+  };
+
+  function processVPNFiles() {
+    var form_data = new FormData();
+    var files = document.getElementById("txt_files").files;
+
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      form_data.append("txt_files", file);
+    }
+  }
+</script>
+{% endblock script %}
