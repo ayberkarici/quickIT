@@ -20,7 +20,8 @@ def index(request):
     
 
     context = {
-        "nav_name" : "vpn_logs",
+        "nav_name" : "tools",
+        "sub_nav" : "vpn_logs",
         'user_packages': user_packages,
     }
     
@@ -68,7 +69,8 @@ def inspect_package(request, key):
         return JsonResponse({'error': 'Paket bulunamadı'}, status=404)
     
     context = {
-        "nav_name" : "vpn_logs",
+        "nav_name" : "tools",
+        "sub_nav" : "vpn_logs",
         "package" : package,
         "text_files" : text_files,
     }

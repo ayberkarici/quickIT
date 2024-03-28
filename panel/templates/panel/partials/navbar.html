@@ -14,11 +14,12 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle {% if nav_name  == "vpn_logs" %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle {% if nav_name  == "tools" %}active{% endif %}" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Tools 
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="{% url "vpn_logs:index" %}">VPN Logs</a></li>
+            <li><a class="dropdown-item {% if sub_nav == "vpn_logs" %}active{% endif %}" href="{% url "vpn_logs:index" %}">VPN Logs</a></li>
+            <li><a class="dropdown-item {% if sub_nav == "fileserver_check" %}active{% endif %}" href="{% url "fileserver_check:index" %}">FileServer Check</a></li>
           </ul>
         </li>
 

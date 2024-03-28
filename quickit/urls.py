@@ -8,6 +8,7 @@ urlpatterns = [
     path('', include('panel.urls'), name="panel"),
     path('account/', include('account.urls'), name="account"),
     path('vpn_logs/', include('vpn_logs.urls'), name="vpn_logs"),
+    path('fileserver_check/', include('fileserver_check.urls'), name="fileserver_check"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if not settings.DEBUG:

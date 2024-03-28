@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'panel.apps.PanelConfig',
     'vpn_logs.apps.VpnLogsConfig',
+    'fileserver_check.apps.FileserverCheckConfig',
     
     
     'django.contrib.admin',
